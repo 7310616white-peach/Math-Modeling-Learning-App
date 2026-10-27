@@ -1,0 +1,15 @@
+node_modules/
+dist/
+outputs/
+work/
+test-results/
+.DS_Store
+.env*
+*.keystore
+*.jks
+*.p12
+private-signing/
+*.apk
+*.aab
+*-backup-*.json
+*-作答-*.txt
