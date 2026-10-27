@@ -180,9 +180,17 @@ export function Lesson({
             <div className="stack-buttons">
               <button onClick={draft.retry}>重新保存草稿</button>
               <button
-                onClick={() => {
-                  exportText(draftText(), `知数-Day${course.day}-作答-${fileStamp()}.txt`);
-                  notify('已发起 TXT 下载，请确认文件已保存。');
+                onClick={async () => {
+                  try {
+                    notify(
+                      await exportText(
+                        draftText(),
+                        `知数-Day${course.day}-作答-${fileStamp()}.txt`,
+                      ),
+                    );
+                  } catch {
+                    notify('未能导出。当前输入仍在页面，可先复制作答。', true);
+                  }
                 }}
               >
                 导出当前作答

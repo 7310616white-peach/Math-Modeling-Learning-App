@@ -60,12 +60,17 @@ export function Records({
         <div className="button-row record-actions">
           <button onClick={() => onCopy(answerText(course, attempt))}>复制作答到聊天</button>
           <button
-            onClick={() => {
-              exportText(
-                answerText(course, attempt),
-                `知数-Day${course.day}-作答-${fileStamp()}.txt`,
-              );
-              notify('已发起 TXT 下载，请确认已保存。');
+            onClick={async () => {
+              try {
+                notify(
+                  await exportText(
+                    answerText(course, attempt),
+                    `知数-Day${course.day}-作答-${fileStamp()}.txt`,
+                  ),
+                );
+              } catch {
+                notify('未能导出，原作答仍保存在学习记录中。可先复制。', true);
+              }
             }}
           >
             导出作答 TXT

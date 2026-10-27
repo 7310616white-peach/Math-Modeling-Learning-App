@@ -9,6 +9,7 @@ test-results/
 *.jks
 *.p12
 private-signing/
+release-artifact/
 *.apk
 *.aab
 *-backup-*.json

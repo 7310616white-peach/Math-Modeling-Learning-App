@@ -2,6 +2,8 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './app/App.jsx';
 import './styles.css';
+import { isNativeApp } from './platform/files.js';
+import { startNativeNavigation } from './platform/navigation.js';
 
 class AppBoundary extends React.Component {
   state = { failed: false };
@@ -25,7 +27,10 @@ createRoot(document.getElementById('root')).render(
     <App />
   </AppBoundary>,
 );
-if (import.meta.env.PROD && location.protocol !== 'file:') {
+startNativeNavigation().catch(() =>
+  window.dispatchEvent(new Event('math:native-navigation-error')),
+);
+if (import.meta.env.PROD && location.protocol !== 'file:' && !isNativeApp()) {
   if ('serviceWorker' in navigator)
     navigator.serviceWorker
       .register(new URL('./sw.js', document.baseURI))

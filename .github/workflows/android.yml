@@ -1,0 +1,57 @@
+name: Android APK
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'android/**'
+      - 'scripts/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'capacitor.config.json'
+      - 'vite.config.js'
+      - 'index.html'
+      - 'THIRD_PARTY_NOTICES.md'
+      - '.github/workflows/android.yml'
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
+      - run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm format:check
+      - run: pnpm android:sync
+      - run: bash ./gradlew assembleRelease
+        working-directory: android
+      - name: Verify and prepare APK
+        run: |
+          mkdir -p release-artifact
+          cp android/app/build/outputs/apk/release/app-release-unsigned.apk release-artifact/
+          cp "$ANDROID_HOME/build-tools/36.0.0/lib/apksigner.jar" release-artifact/
+          "$ANDROID_HOME/build-tools/36.0.0/zipalign" -c -P 16 -v 4 release-artifact/app-release-unsigned.apk
+          "$ANDROID_HOME/build-tools/36.0.0/aapt" dump badging release-artifact/app-release-unsigned.apk
+          sha256sum release-artifact/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: math-pocket-release-unsigned
+          path: release-artifact/*
+          if-no-files-found: error

@@ -1,6 +1,6 @@
 # 知数 数学建模学习 App
 
-0.1.0 本地预览版。沿用英语学习 App 的学习台、独立练习、学习记录与备份模式，面向大一零基础的数学建模学习。
+0.1.0 首轮试用版。沿用英语学习 App 的学习台、独立练习、学习记录与备份模式，面向大一零基础的数学建模学习。独立维护 Web 和 Android 客户端。
 
 包含完整 Day 2 课程、30天路线、逐项自动保存的草稿、不可覆盖的待批改作答、用户记录的老师反馈、TXT 导出、课程 JSON 导入、完整备份合并恢复，以及离线 Web App。没有后台、账号、AI接口或自动判分。只有记录老师实际确认的反馈后，才计为确认学习日。
 
@@ -8,24 +8,36 @@ Day 2 完整课程包括变量、参数、单位与 N/s/H/m 符号；50人示范
 
 ## 运行和预览
 
-需要 Node.js 24+，在此目录安装 package.json 所列依赖，然后运行：
+需要 Node.js 24+、pnpm 11.25.0，在此目录按锁文件安装依赖，然后运行：
 
 ```sh
-npm install
-npm run dev
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
 本机开发预览端口 5186。生产构建与离线预览：
 
 ```sh
-npm test
-npm run build
-npm run preview
+pnpm test
+pnpm build
+pnpm preview
 ```
 
-生产预览端口4186，首次缓存就绪后可断网重开。dist/知数-数学建模App-预览.html 可直接双击打开，不依赖服务器，但文件模式不支持安装为PWA，存储能力取决于浏览器。原生Android APK尚未生成。
+生产预览端口4186，首次缓存就绪后可断网重开。dist/知数-数学建模App-预览.html 可直接双击打开，不依赖服务器，但文件模式不支持安装为PWA，存储能力取决于浏览器。
 
-当前开发机复用父目录现有依赖以避免重复安装；交付源码不携带父项目的依赖、数据库、签名文件或Git历史。新机器按此目录的package.json安装。本项目中的 private:true 用于禁止误发布为npm包，与GitHub仓库是否公开无关。
+当前开发机复用已存在的依赖；源码不携带英语项目的依赖、数据库、签名文件或Git历史。新机器按本目录的锁文件安装。本项目中的 private:true 用于禁止误发布为npm包，与GitHub仓库是否公开无关。
+
+## Android 编译和安装
+
+应用名为“知数”，应用标识 io.github.mathpocket.app，versionName 为0.1.0，versionCode为1。它与英语App可以同时安装，学习库分别保存。
+
+安装Android SDK与Java 21后，可执行 `pnpm android:sync`，再在android目录运行 `./gradlew assembleRelease`。公开仓库的Android APK工作流会执行测试、格式检查、Web构建和原生编译，生成未签名release APK及官方apksigner工具供本机签名；工作流本身不持有私人密钥。
+
+本机使用 `scripts/sign-android.mjs` 签名。只有首次生成全新发布密钥时使用 `--initialize-key`；密钥与口令保存在被Git忽略的private-signing目录，目录权限700，文件权限600。请私人备份此目录，后续升级使用相同签名，不能重新生成来代替丢失的旧密钥。
+
+安卓导出通过系统分享将TXT或JSON文件另存，临时缓存不能代替外部备份；App内的文件选择可导入课程与完整备份。返回键和两侧系统返回通过AndroidX分发，优先关闭弹窗，离开课堂前等待草稿保存；保存失败保留页面。系统自动备份关闭。首次安装即可离线读课，不需要联网加载课程。
+
+编译与签名验证不等于真机验收：仍需在手机检查键盘、返回手势、文件选择和导出接收端。
 
 ## 结构
 

@@ -1,8 +1,12 @@
 import { useEffect, useRef } from 'react';
+import { backHandlers } from '../platform/navigation.js';
 export function Modal({ titleId, onClose, children }) {
   const dialog = useRef(null);
+  const close = useRef(onClose);
+  close.current = onClose;
   useEffect(() => {
     dialog.current.showModal();
+    return backHandlers.add(() => close.current(), 100);
   }, []);
   return (
     <dialog

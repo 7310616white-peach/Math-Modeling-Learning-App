@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { builtInCourses, roadmap } from '../domain/course.js';
 import { parseImport } from '../domain/validation.js';
 import { applyImport, makeBackup, recordDay1Baseline } from '../data/store.js';
-import { exportJSON, fileStamp, readImportFile } from '../platform/files.js';
+import { exportJSON, fileStamp, readImportFile, isNativeApp } from '../platform/files.js';
 import { Badge, Icon, PageHeading, Modal } from './Common.jsx';
 
 export function Profile({
@@ -23,8 +23,7 @@ export function Profile({
   async function backup() {
     try {
       const data = await makeBackup();
-      exportJSON(data, `math-pocket-backup-${fileStamp()}.json`);
-      notify('完整备份已发起下载，包含草稿、作答和反馈；请在本机确认文件已保存。');
+      notify(await exportJSON(data, `math-pocket-backup-${fileStamp()}.json`));
     } catch {
       notify('备份未能导出。请保留当前页面；作答可先单独复制或导出。', true);
     }
@@ -224,17 +223,26 @@ export function Profile({
           <div className="section-title">
             <h2>离线与安装</h2>
             <Badge>
-              {location.protocol === 'file:'
-                ? '离线预览文件'
-                : offlineReady
-                  ? '离线资源已就绪'
-                  : '正在准备离线资源'}
+              {isNativeApp()
+                ? '安卓离线 App'
+                : location.protocol === 'file:'
+                  ? '离线预览文件'
+                  : offlineReady
+                    ? '离线资源已就绪'
+                    : '正在准备离线资源'}
             </Badge>
           </div>
           <p className="muted">
-            首次在浏览器打开后等待缓存完成，可以离线继续。支持添加到主屏幕的浏览器可将知数作为独立窗口打开。
+            {isNativeApp()
+              ? '课程随安装包保存在手机，首次启动即可离线学习。本机作答不会自动同步到浏览器。'
+              : '首次在浏览器打开后等待缓存完成，可以离线继续。支持添加到主屏幕的浏览器可将知数作为独立窗口打开。'}
           </p>
-          {installEvent ? (
+          {isNativeApp() ? (
+            <p className="small muted">
+              导出会打开系统分享，请选择文件管理器或其他保存位置。恢复时在 App 内选择 JSON
+              备份文件。
+            </p>
+          ) : installEvent ? (
             <button className="primary" onClick={onInstall}>
               添加到设备
             </button>
@@ -245,8 +253,9 @@ export function Profile({
             </p>
           )}
           <p className="footnote">
-            当前为 Web App 预览版，尚未生成 Android APK。离线预览 HTML
-            可直接打开；“添加到主屏幕”需要受支持的网页环境。
+            {isNativeApp()
+              ? '安卓 0.1.0 试用版。请保留完整备份；升级应沿用相同应用标识与签名。'
+              : '浏览器版与安卓版的学习库各自独立，可通过完整备份迁移。离线预览 HTML 可直接打开；安装为 Web App 需要受支持的网页环境。'}
           </p>
         </section>
       </div>
@@ -258,7 +267,7 @@ export function Profile({
         <p className="muted">
           资料依据：《数维杯大一新手30天轻量备赛指南》及本次 Day 2
           课程。示例均为虚构练习数据。源代码与本机学习数据分开，GitHub
-          尚未上传；确认这一版后，再创建公开（Public）仓库。
+          源码仓库为公开（Public），个人学习记录留在本机。
         </p>
         <p className="small muted">
           浏览器清理数据、隐私模式和卸载可能丢失本机记录，完整备份不等于云同步。数学学习库独立，不读取英语

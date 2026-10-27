@@ -1,0 +1,6 @@
+{
+  "appId": "io.github.mathpocket.app",
+  "appName": "知数",
+  "webDir": "dist",
+  "android": { "backgroundColor": "#ffffff", "allowMixedContent": false }
+}

@@ -7,6 +7,8 @@ import { Courses } from '../features/Courses.jsx';
 import { Records } from '../features/Records.jsx';
 import { Profile } from '../features/Profile.jsx';
 import { CopyDialog, Icon } from '../features/Common.jsx';
+import { backHandlers } from '../platform/navigation.js';
+import { isNativeApp } from '../platform/files.js';
 
 const pages = [
   ['home', '学习台'],
@@ -42,7 +44,7 @@ export function App() {
     };
     window.addEventListener('math:offline-ready', ready);
     window.addEventListener('beforeinstallprompt', install);
-    if (navigator.serviceWorker && location.protocol !== 'file:')
+    if (navigator.serviceWorker && location.protocol !== 'file:' && !isNativeApp())
       navigator.serviceWorker.ready.then(() => setOfflineReady(true));
     return () => {
       window.removeEventListener('math:offline-ready', ready);
@@ -94,6 +96,17 @@ export function App() {
     }
     location.hash = `/${page}/${id}/${section}`;
   };
+  useEffect(() => {
+    if (route.page === 'home') return;
+    return backHandlers.add(async () => {
+      await navigate(route.page === 'records' && route.id ? 'records' : 'home');
+    });
+  }, [route.page, route.id, route.section]);
+  useEffect(() => {
+    const fail = () => notify('返回操作未完成，当前输入仍在页面。请先保存或导出。', true);
+    window.addEventListener('math:native-navigation-error', fail);
+    return () => window.removeEventListener('math:native-navigation-error', fail);
+  }, [notify]);
   const copy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -162,7 +175,7 @@ export function App() {
           <span>{route.page === 'learn' ? '课堂' : pages.find(([id]) => id === page)?.[1]}</span>
           <span>
             <span className="status-dot" />
-            {offlineReady ? '离线就绪' : '本机保存'}
+            {isNativeApp() ? '离线 App' : offlineReady ? '离线就绪' : '本机保存'}
             <b className="top-version">第一版预览</b>
           </span>
         </header>
