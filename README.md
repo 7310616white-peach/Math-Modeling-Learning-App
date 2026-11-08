@@ -1,6 +1,6 @@
 # 知数 数学建模学习 App
 
-0.1.0 首轮试用版。沿用英语学习 App 的学习台、独立练习、学习记录与备份模式，面向大一零基础的数学建模学习。独立维护 Web 和 Android 客户端。
+0.2.0 安卓冲刺版。启动后进入 12 天冲刺学习助手，可在学习记录打开旧版学习台。两套学习进度分别保存，可用 JSON 迁移冲刺网页的作答。
 
 包含完整 Day 2 课程、30天路线、逐项自动保存的草稿、不可覆盖的待批改作答、用户记录的老师反馈、TXT 导出、课程 JSON 导入、完整备份合并恢复，以及离线 Web App。没有后台、账号、AI接口或自动判分。只有记录老师实际确认的反馈后，才计为确认学习日。
 
@@ -29,7 +29,7 @@ pnpm preview
 
 ## Android 编译和安装
 
-应用名为“知数”，应用标识 io.github.mathpocket.app，versionName 为0.1.0，versionCode为1。它与英语App可以同时安装，学习库分别保存。
+应用名为“知数”，应用标识 io.github.mathpocket.app，versionName 为0.2.0，versionCode 为 2。沿用 0.1.0 的签名时可覆盖升级。
 
 安装Android SDK与Java 21后，可执行 `pnpm android:sync`，再在android目录运行 `./gradlew assembleRelease`。公开仓库的Android APK工作流会执行测试、格式检查、Web构建和原生编译，生成未签名release APK及官方apksigner工具供本机签名；工作流本身不持有私人密钥。
 

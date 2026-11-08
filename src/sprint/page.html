@@ -1,0 +1,2408 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>数维杯2026｜赛前冲刺学习助手</title>
+    <style>
+      :root {
+        --ink: #203d38;
+        --muted: #596e68;
+        --green: #206354;
+        --pale: #eaf2eb;
+        --paper: #fffefa;
+        --bg: #f5f4ed;
+        --line: #dce3d8;
+        --amber: #7b501d;
+        --warm: #fbf1dd;
+        --radius: 20px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 30px;
+      }
+      body {
+        margin: 0;
+        color: var(--ink);
+        background: var(--bg);
+        font:
+          16px/1.85 -apple-system,
+          BlinkMacSystemFont,
+          'PingFang SC',
+          'Microsoft YaHei',
+          sans-serif;
+      }
+      a {
+        color: var(--green);
+        text-underline-offset: 5px;
+      }
+      a:hover {
+        text-decoration-thickness: 2px;
+      }
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+      button,
+      a {
+        -webkit-tap-highlight-color: transparent;
+      }
+      button {
+        min-height: 46px;
+        padding: 10px 17px;
+        color: var(--green);
+        border: 1px solid #a8bdb0;
+        border-radius: 11px;
+        background: var(--paper);
+        cursor: pointer;
+        line-height: 1.5;
+      }
+      button:hover {
+        background: #e4eee4;
+      }
+      button.primary {
+        color: white;
+        background: var(--green);
+        border-color: var(--green);
+      }
+      button.primary:hover {
+        background: #174c40;
+      }
+      :focus-visible {
+        outline: 3px solid #b67a30;
+        outline-offset: 4px;
+      }
+      .skip {
+        position: absolute;
+        left: 20px;
+        top: -80px;
+        z-index: 10;
+        background: white;
+        padding: 10px;
+      }
+      .skip:focus {
+        top: 10px;
+      }
+      .shell {
+        max-width: 1180px;
+        margin: auto;
+        padding: 40px 36px 65px;
+      }
+      .masthead {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid var(--line);
+      }
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        font-weight: 650;
+        letter-spacing: 0.08em;
+      }
+      .brand-mark {
+        display: grid;
+        place-items: center;
+        width: 37px;
+        height: 37px;
+        background: var(--green);
+        color: white;
+        border-radius: 11px;
+        font:
+          24px Georgia,
+          serif;
+      }
+      .micro {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .offline {
+        font-size: 13px;
+        color: var(--muted);
+        white-space: nowrap;
+      }
+      .offline::before {
+        content: '';
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        background: var(--green);
+        border-radius: 50%;
+        margin-right: 8px;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 210px minmax(0, 1fr);
+        gap: 48px;
+        padding-top: 35px;
+      }
+      aside {
+        min-width: 0;
+      }
+      .sidebar {
+        position: sticky;
+        top: 28px;
+      }
+      .course-label {
+        font-size: 12px;
+        color: var(--muted);
+        letter-spacing: 0.08em;
+      }
+      .day-number {
+        font:
+          76px/1 Georgia,
+          serif;
+        color: var(--green);
+        margin: 18px 0 12px;
+      }
+      .sidebar p {
+        font-size: 13px;
+        margin: 8px 0;
+      }
+      .sidebar nav {
+        display: grid;
+        gap: 2px;
+        margin: 24px 0;
+        border-top: 1px solid var(--line);
+        padding-top: 18px;
+      }
+      nav a {
+        text-decoration: none;
+        display: block;
+        padding: 7px 0;
+        font-size: 14px;
+      }
+      nav a span {
+        color: var(--muted);
+        margin-right: 12px;
+        font-size: 11px;
+      }
+      .side-note {
+        padding: 15px;
+        background: #e8eee4;
+        border-radius: 12px;
+      }
+      main {
+        min-width: 0;
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        overflow-wrap: anywhere;
+      }
+      h1 {
+        font-size: clamp(30px, 4.5vw, 47px);
+        letter-spacing: -0.035em;
+        line-height: 1.28;
+        font-weight: 650;
+        margin: 14px 0 20px;
+      }
+      h2 {
+        font-size: 25px;
+        line-height: 1.5;
+        letter-spacing: -0.025em;
+        margin: 7px 0 18px;
+        font-weight: 650;
+      }
+      h3 {
+        font-size: 18px;
+        line-height: 1.6;
+        margin: 0 0 10px;
+        font-weight: 650;
+      }
+      p {
+        margin: 10px 0;
+      }
+      strong {
+        font-weight: 650;
+      }
+      .intro {
+        font-size: 17px;
+        color: var(--muted);
+        max-width: 650px;
+      }
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 22px 0 25px;
+      }
+      .tag {
+        font-size: 12px;
+        padding: 3px 10px;
+        border: 1px solid #bccdbf;
+        border-radius: 99px;
+        color: var(--green);
+      }
+      .hero {
+        padding-bottom: 27px;
+      }
+      .hero-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+        font-size: 14px;
+      }
+      .section {
+        margin-top: 22px;
+        padding: 28px 30px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--paper);
+      }
+      .section-kicker {
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        color: var(--green);
+        text-transform: uppercase;
+      }
+      .muted,
+      .help {
+        color: var(--muted);
+      }
+      .help {
+        font-size: 13px;
+      }
+      .schedule {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin: 21px 0;
+      }
+      .schedule div {
+        border-top: 2px solid #c3d3bd;
+        padding-top: 10px;
+      }
+      .schedule b {
+        display: block;
+        font:
+          30px/1.3 Georgia,
+          serif;
+        color: var(--green);
+      }
+      .schedule small {
+        font:
+          12px -apple-system,
+          BlinkMacSystemFont,
+          'PingFang SC',
+          sans-serif;
+        margin-left: 4px;
+      }
+      .schedule span {
+        font-size: 14px;
+      }
+      .note {
+        padding: 15px 18px;
+        background: var(--pale);
+        border-radius: 12px;
+        font-size: 14px;
+      }
+      .note.warm {
+        background: var(--warm);
+        color: var(--amber);
+      }
+      .recall {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .recall p {
+        font-size: 14px;
+      }
+      .concepts {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin: 20px 0;
+      }
+      .concept {
+        border: 1px solid var(--line);
+        border-radius: 13px;
+        padding: 18px;
+      }
+      .concept small {
+        color: var(--muted);
+        letter-spacing: 0.12em;
+        font-size: 11px;
+      }
+      .concept h3 {
+        margin: 5px 0 8px;
+      }
+      .concept p {
+        font-size: 14px;
+        margin: 0;
+      }
+      .table-wrap {
+        overflow-x: auto;
+        margin: 20px 0 16px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+        text-align: left;
+      }
+      caption {
+        text-align: left;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      th,
+      td {
+        border-bottom: 1px solid var(--line);
+        padding: 12px 10px;
+        vertical-align: top;
+      }
+      th {
+        font-size: 12px;
+        color: var(--muted);
+        background: #f1f4ec;
+        font-weight: 500;
+      }
+      td:first-child {
+        font:
+          italic 23px/1.5 Georgia,
+          serif;
+        color: var(--green);
+        width: 50px;
+      }
+      .formula {
+        padding: 18px 20px;
+        border-radius: 13px;
+        background: #eef2e9;
+        margin: 18px 0;
+      }
+      .formula .math {
+        display: block;
+        font:
+          23px/1.7 Georgia,
+          'Songti SC',
+          serif;
+        color: #174e40;
+        overflow-wrap: anywhere;
+      }
+      .formula p {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 6px 0 0;
+      }
+      .steps {
+        list-style: none;
+        padding: 0;
+        margin: 24px 0;
+        counter-reset: step;
+      }
+      .steps li {
+        display: grid;
+        grid-template-columns: 29px 1fr;
+        gap: 13px;
+        margin: 21px 0;
+        counter-increment: step;
+      }
+      .steps li::before {
+        content: counter(step);
+        display: grid;
+        place-items: center;
+        width: 29px;
+        height: 29px;
+        background: var(--pale);
+        color: var(--green);
+        border-radius: 50%;
+        font-size: 13px;
+        margin-top: 3px;
+      }
+      .steps p {
+        margin: 3px 0;
+        font-size: 14px;
+      }
+      .equation {
+        font-size: 18px;
+        color: var(--green);
+        font-weight: 550;
+      }
+      .capacity {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 20px 0;
+      }
+      .capacity div {
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        font-size: 14px;
+      }
+      .capacity b {
+        display: block;
+        font-size: 20px;
+        color: var(--green);
+      }
+      .practice-heading {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+      .practice-heading h3 {
+        margin: 0;
+      }
+      .pill {
+        font-size: 11px;
+        padding: 3px 9px;
+        background: #eaf1e6;
+        border-radius: 99px;
+        color: var(--green);
+      }
+      .exercise {
+        padding-top: 22px;
+        margin-top: 22px;
+        border-top: 1px solid var(--line);
+      }
+      ol,
+      ul {
+        padding-left: 23px;
+      }
+      li {
+        padding-left: 3px;
+        margin: 5px 0;
+      }
+      .question-list {
+        font-size: 14px;
+      }
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 18px 0 8px;
+      }
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 170px;
+        padding: 15px 17px;
+        border: 1px solid #b6c6b7;
+        background: #fcfcf7;
+        color: var(--ink);
+        border-radius: 12px;
+        resize: vertical;
+        font-size: 16px;
+        line-height: 1.8;
+      }
+      textarea::placeholder {
+        color: #718078;
+        opacity: 1;
+      }
+      textarea:focus {
+        background: white;
+      }
+      #symbols {
+        min-height: 155px;
+      }
+      #reflection {
+        min-height: 120px;
+      }
+      .workspace {
+        border-color: #b1c9b5;
+      }
+      .status {
+        border-left: 3px solid var(--green);
+        background: var(--pale);
+        padding: 12px 15px;
+        font-size: 13px;
+        margin: 18px 0;
+      }
+      .status.error {
+        border-left-color: #ac6929;
+        background: var(--warm);
+        color: var(--amber);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 17px 0;
+      }
+      .backup-note {
+        font-size: 13px;
+        color: var(--muted);
+        padding-top: 15px;
+        border-top: 1px solid var(--line);
+      }
+      .finish {
+        padding: 21px 0 5px;
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .finish strong {
+        color: var(--green);
+      }
+      footer {
+        margin-top: 30px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      footer p {
+        margin: 8px 0;
+      }
+      dialog {
+        width: min(650px, calc(100% - 28px));
+        padding: 24px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        color: var(--ink);
+        background: var(--paper);
+        max-height: 90vh;
+      }
+      dialog::backdrop {
+        background: rgb(23 42 32 / 0.45);
+      }
+      dialog textarea {
+        min-height: 270px;
+        max-height: 45vh;
+      }
+      dialog label {
+        margin-top: 0;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      @media (max-width: 850px) {
+        .shell {
+          padding: 25px 24px 45px;
+        }
+        .layout {
+          grid-template-columns: 160px minmax(0, 1fr);
+          gap: 25px;
+        }
+        .section {
+          padding: 25px 23px;
+        }
+      }
+      @media (max-width: 680px) {
+        .shell {
+          padding: 20px 18px 40px;
+        }
+        .masthead {
+          padding-bottom: 17px;
+        }
+        .brand {
+          font-size: 14px;
+          letter-spacing: 0.025em;
+        }
+        .micro {
+          display: none;
+        }
+        .offline {
+          font-size: 12px;
+        }
+        .layout {
+          display: block;
+          padding-top: 24px;
+        }
+        .sidebar {
+          position: static;
+        }
+        .day-number,
+        .side-note,
+        .course-label,
+        .sidebar > p {
+          display: none;
+        }
+        .sidebar nav {
+          display: flex;
+          overflow-x: auto;
+          white-space: nowrap;
+          border: 0;
+          padding: 0 0 12px;
+          gap: 20px;
+          margin: 0 0 18px;
+        }
+        nav a {
+          font-size: 13px;
+        }
+        nav a span {
+          display: none;
+        }
+        h1 {
+          font-size: 34px;
+        }
+        h2 {
+          font-size: 23px;
+        }
+        .intro {
+          font-size: 16px;
+        }
+        .hero {
+          padding-bottom: 12px;
+        }
+        .section {
+          padding: 23px 19px;
+          margin-top: 17px;
+          border-radius: 16px;
+        }
+        .recall,
+        .concepts {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+        .recall p {
+          margin: 5px 0;
+        }
+        .schedule {
+          gap: 7px;
+        }
+        .schedule span {
+          font-size: 12px;
+        }
+        .schedule b {
+          font-size: 26px;
+        }
+        .schedule small {
+          font-size: 10px;
+          margin-left: 2px;
+        }
+        th,
+        td {
+          padding: 10px 6px;
+          font-size: 13px;
+        }
+        .capacity {
+          grid-template-columns: 1fr;
+        }
+        .formula {
+          padding: 15px;
+        }
+        .formula .math {
+          font-size: 21px;
+        }
+        .actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+        .actions button {
+          padding: 11px 8px;
+          font-size: 14px;
+        }
+        .actions .primary {
+          grid-column: 1/-1;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+      @media print {
+        body {
+          background: white;
+          color: #111;
+          font-size: 11pt;
+        }
+        .shell {
+          padding: 0;
+          max-width: none;
+        }
+        .layout {
+          display: block;
+          padding: 0;
+        }
+        aside,
+        .hero-links,
+        .actions,
+        .no-print,
+        dialog,
+        .skip {
+          display: none !important;
+        }
+        .section {
+          border-radius: 0;
+          margin-top: 14px;
+          padding: 15px 0;
+          border: 0;
+          border-top: 1px solid #bbb;
+        }
+        .masthead {
+          padding-bottom: 10px;
+        }
+        .hero {
+          padding-top: 14px;
+        }
+        h1 {
+          font-size: 28pt;
+        }
+        h2 {
+          break-after: avoid;
+        }
+        textarea {
+          display: none;
+        }
+        .print-answer {
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+          padding: 10px;
+          border: 1px solid #bbb;
+          font-size: 11pt;
+        }
+        .note,
+        .formula {
+          background: #f1f1f1;
+        }
+        .exercise {
+          break-inside: avoid;
+        }
+        footer {
+          break-inside: avoid;
+        }
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .home-stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin: 24px 0;
+      }
+      .home-stats > div {
+        padding: 14px;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+      .home-stats span,
+      .home-stats small,
+      .home-stats a {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .home-stats strong {
+        display: block;
+        line-height: 1.5;
+        margin: 4px 0;
+        font-variant-numeric: tabular-nums;
+      }
+      .plan-list {
+        display: grid;
+        gap: 8px;
+      }
+      .plan-row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 82px 1fr auto;
+        gap: 10px;
+        align-items: center;
+        text-align: left;
+      }
+      .plan-row[aria-current] {
+        background: var(--pale);
+        border-color: var(--green);
+      }
+      .plan-row small {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .plan-row .pill {
+        white-space: nowrap;
+      }
+      .button-link {
+        display: inline-flex;
+        align-items: center;
+        padding: 9px 15px;
+        border-radius: 11px;
+        border: 1px solid var(--line);
+      }
+      .search {
+        width: 100%;
+        font: inherit;
+        padding: 10px;
+        border: 1px solid #a8bdb0;
+        border-radius: 9px;
+      }
+      .glossary-group {
+        margin: 18px 0;
+      }
+      .glossary-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin: 8px 0;
+      }
+      .glossary-grid details,
+      .review-box {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 10px 13px;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .glossary-grid p {
+        font-size: 14px;
+      }
+      .check {
+        display: flex;
+        gap: 9px;
+        align-items: center;
+      }
+      .check input {
+        min-width: 17px;
+        min-height: 17px;
+      }
+      .review-box textarea {
+        min-height: 90px;
+      }
+      .sprint-notice {
+        position: fixed;
+        z-index: 9;
+        bottom: 18px;
+        right: 18px;
+        max-width: min(470px, calc(100vw - 36px));
+        padding: 12px 16px;
+        border: 1px solid #a8bdb0;
+        background: #eaf2eb;
+        border-radius: 12px;
+        box-shadow: 0 4px 18px #203d3820;
+        font-size: 14px;
+      }
+      #lesson-content h3 {
+        margin-top: 22px;
+      }
+      #lesson-content details {
+        margin: 12px 0;
+      }
+      #answer-fields textarea {
+        min-height: 110px;
+      }
+      #attempt-history pre {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        font: inherit;
+        font-size: 13px;
+      }
+      @media (max-width: 680px) {
+        .home-stats,
+        .glossary-grid {
+          grid-template-columns: 1fr;
+        }
+        .plan-row {
+          grid-template-columns: 1fr auto;
+          gap: 4px 8px;
+        }
+        .plan-row small {
+          grid-column: 1/-1;
+        }
+      }
+    </style>
+  </head>
+  <body data-sprint-app>
+    <a class="skip" href="#main">跳到学习内容</a>
+    <div class="shell">
+      <header class="masthead">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">∑</span>数学建模 · 秋季赛冲刺
+        </div>
+        <span class="offline">单文件 · 可离线</span>
+      </header>
+      <div class="layout">
+        <aside aria-label="学习导航">
+          <div class="sidebar">
+            <div class="course-label">2026 数维杯秋季赛</div>
+            <div class="day-number" aria-hidden="true">12</div>
+            <p>学习建议 · 11月8日—19日</p>
+            <nav>
+              <a href="#home">学习首页</a><a href="#plan">12 天课程</a>
+              <a href="#lesson">当前课程</a><a href="#quick">基础速查</a
+              ><a href="#records">学习记录</a>
+            </nav>
+            <div class="side-note">
+              <strong>忙时做 10 分钟</strong>
+              <p>先留下一个自己的计算或解释，之后继续，不必补双倍。</p>
+            </div>
+          </div>
+        </aside>
+        <main id="main">
+          <noscript
+            ><p class="note warm">
+              请使用启用 JavaScript 的浏览器打开本文件，才能查看课程、作答和保存。
+            </p></noscript
+          >
+          <div id="home" class="hero">
+            <div class="section-kicker">11月8日—19日 / 12天赛前冲刺</div>
+            <h1>数维杯2026｜赛前冲刺学习助手</h1>
+            <p class="intro">
+              看懂一个小问，整理数据和单位，独立做基础计算与图表，再把假设、结果和局限解释给队友。
+            </p>
+            <div class="home-stats">
+              <div>
+                <span>开赛 · 北京时间</span><strong>2026年11月20日 09:00</strong
+                ><a href="https://www.nmmcm.org.cn/News/198.html" target="_blank" rel="noopener"
+                  >赛事官网通知</a
+                >
+              </div>
+              <div>
+                <span>距离开赛</span><strong id="countdown"></strong
+                ><small>使用设备时钟 · 北京时间</small>
+              </div>
+              <div>
+                <span>冲刺课程掌握</span><strong id="progress"></strong
+                ><small id="progress-detail"></small>
+              </div>
+            </div>
+            <div class="note">
+              <strong>今日建议 · <span id="today-date"></span></strong>
+              <p id="suggestion"></p>
+              <a id="today-link" href="#lesson">打开建议课</a>
+            </div>
+            <div class="actions">
+              <button class="primary" id="resume">继续上次未完成的课</button
+              ><a class="button-link" href="#quick">基础知识速查</a>
+            </div>
+            <p id="storage" class="status" role="status">正在检查本地保存…</p>
+          </div>
+          <section id="plan" class="section">
+            <div class="section-kicker">01 / 课程计划</div>
+            <h2>12 天学习路线</h2>
+            <p class="muted">
+              日期是建议。所有课程都可打开，可把需要补练的课设为下一课。掌握状态依据作答和老师反馈。
+            </p>
+            <div id="plan-list" class="plan-list"></div>
+          </section>
+          <section id="lesson" class="section workspace">
+            <div id="lesson-content"></div>
+            <div id="answer-fields"></div>
+            <label for="notes">学习整理 · 5 分钟</label>
+            <p class="help">留下一句结果、一条假设或局限，以及最想请老师检查的地方。</p>
+            <textarea id="notes" placeholder="我能解释的是……&#10;我还想问的是……"></textarea>
+            <div id="optional"></div>
+            <div class="actions">
+              <button id="copy-answer">复制作答</button><button id="text-export">导出 TXT</button>
+              <button id="md-export">导出 Markdown</button
+              ><button id="copy-prompt">复制批改提示词</button>
+            </div>
+            <details class="review-box">
+              <summary>记录实际提交与老师批改</summary>
+              <p class="help">
+                先把作答粘贴到聊天或交给老师，再记录提交。网页只保存本机记录。每次提交保留当时的答案，之后可继续修改草稿。
+              </p>
+              <label class="check"
+                ><input id="sent" type="checkbox" />我已把当前这版作答交给老师</label
+              >
+              <button id="submit-local">记录提交</button>
+              <p id="attempt-info" class="help"></p>
+              <label class="check"
+                ><input id="reviewed" type="checkbox" />老师已批改这一版，并明确确认达到要求</label
+              >
+              <label for="feedback">老师的反馈要点</label
+              ><textarea
+                id="feedback"
+                maxlength="12000"
+                placeholder="填写实际反馈或简短摘录"
+              ></textarea>
+              <button class="primary" id="master">记录为已掌握</button>
+              <div id="attempt-history"></div>
+            </details>
+          </section>
+          <section id="quick" class="section">
+            <div class="section-kicker">02 / 基础知识速查</div>
+            <h2>遇到一个词，先看一个例子</h2>
+            <label for="quick-search">搜索概念或关键词</label>
+            <input
+              class="search"
+              id="quick-search"
+              type="search"
+              placeholder="例如 单位、MAE、排队"
+            />
+            <div id="quick-list"></div>
+          </section>
+          <section id="records" class="section">
+            <div class="section-kicker">03 / 学习记录与迁移</div>
+            <h2>保存进度，接着上次学习</h2>
+            <div class="note">
+              <strong>原 30 天课程记录</strong>
+              <p>
+                原 Day 1 · 已掌握（建模思想、容量、取整、假设与解释）<br />原 Day 2 ·
+                已讲解、待练习（变量、参数与单位）
+              </p>
+              <small>历史记录单独列示，冲刺进度仅统计新 12 天课程。</small>
+            </div>
+            <p class="help">
+              草稿与进度存在当前浏览器。清除浏览器数据、使用隐私浏览或移动文件可能导致记录无法读取。建议定期导出
+              JSON。
+            </p>
+            <div class="actions">
+              <button class="primary" id="export-json">导出完整 JSON</button
+              ><button id="import-json">导入备份</button> <button id="summary">复制进度摘要</button
+              ><button id="stage">复制 7 日阶段总结</button>
+            </div>
+            <input type="file" id="file" accept=".json,.html,application/json,text/html" hidden />
+            <p class="help">
+              导入支持本页 JSON、旧 Day 2「含答案的网页」和知数旧版 JSON。旧答案仅迁入冲刺 Day 1
+              的空白栏，旧进度不计入冲刺。若旧网页草稿只在浏览器中，请先在原网页下载「含答案的网页」。
+            </p>
+            <p class="help" id="stage-info"></p>
+            <p>
+              <a id="classic-link" href="./index.html?classic=1" hidden
+                >打开旧版学习台和原学习记录</a
+              >
+            </p>
+            <details>
+              <summary>简单使用说明</summary>
+              <ol>
+                <li>
+                  下载 HTML，在 Safari 或 Chrome 中打开。手机文件预览若只能阅读，请用能运行本地 HTML
+                  的浏览器打开。
+                </li>
+                <li>选一课，按回顾、示范、独立作答、整理的顺序学。忙时完成该课最低任务即可。</li>
+                <li>
+                  复制或导出批改文本，手动交给老师，再记录实际提交。收到老师确认后填写反馈，才记为已掌握。
+                </li>
+                <li>
+                  换设备时先导出 JSON，再在新设备导入。每日北京时间 8 点的学习提醒由你已有的 ChatGPT
+                  自动任务负责。
+                </li>
+              </ol>
+            </details>
+          </section>
+          <footer>
+            数维杯 2026 秋季赛 ·
+            个人备赛页。例题与练习数据均为虚构教学数据，真题题意概述单独标注。<br /><a
+              href="https://www.nmmcm.org.cn/News/213.html"
+              target="_blank"
+              rel="noopener"
+              >当届论文格式规范</a
+            >
+          </footer>
+        </main>
+      </div>
+    </div>
+    <dialog id="text-dialog" aria-labelledby="dialog-title">
+      <h2 id="dialog-title">手动复制</h2>
+      <p id="dialog-help" class="help">长按全选复制，或在 Mac 上按 ⌘C。</p>
+      <textarea id="copy-text" readonly aria-label="可复制文本"></textarea>
+      <div class="actions">
+        <button id="select-text">全选文本</button><button id="close-dialog">关闭</button>
+      </div>
+    </dialog>
+    <div id="notice" class="sprint-notice" role="status" hidden></div>
+    <template id="old-concepts">
+      <h2>变量、参数和单位</h2>
+      <div class="concepts">
+        <div class="concept">
+          <small>VARIABLE</small>
+          <h3>变量：研究或决定的量</h3>
+          <p>
+            例如“要安排几名志愿者”，用 m 表示。它是我们要决定的量，称为<strong>决策变量</strong>。
+          </p>
+        </div>
+        <div class="concept">
+          <small>PARAMETER</small>
+          <h3>参数：当前模型中暂时固定的量</h3>
+          <p>
+            例如一次活动已给定的学生人数、平均服务时长和开放时长。计算这一次安排时，先把它们当作固定输入。
+          </p>
+        </div>
+      </div>
+      <p>
+        <strong>身份取决于问题。</strong>若研究“学生人数变化会怎样影响用人需求”，N
+        就可以作为变化的输入量；在一次具体计算中，它又可以是给定参数。不要只看字母来判断。
+      </p>
+      <div class="table-wrap">
+        <table>
+          <caption>
+            本课符号表 · 先解释，再代数字
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">符号</th>
+              <th scope="col">含义</th>
+              <th scope="col">单位 / 量纲</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>N</td>
+              <td>需要接受咨询的学生总数</td>
+              <td>人（学生）；计数</td>
+            </tr>
+            <tr>
+              <td>s</td>
+              <td>一名志愿者服务一名学生的平均用时</td>
+              <td>分钟/人（每名学生）；时间/服务对象计数</td>
+            </tr>
+            <tr>
+              <td>H</td>
+              <td>每名志愿者在开放期间可工作的时长</td>
+              <td>小时；时间</td>
+            </tr>
+            <tr>
+              <td>m</td>
+              <td>安排的志愿者人数</td>
+              <td>人（志愿者）；计数，取非负整数</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="help">
+        “量纲”描述量的类型，如时间、长度。N、m
+        是计数，数学上可视为无量纲；本课保留“人”这个标签，区分学生与志愿者，便于读题和核对。
+      </p>
+      <h3 style="margin-top: 22px">先统一单位，再建立关系</h3>
+      <p>
+        1 小时 = 60 分钟。H 用小时计时，每名志愿者可工作的时间是
+        <strong>60H 分钟</strong>。不能把 2 小时直接当成 2 分钟，也不能把 5 分钟与 2
+        小时的数值直接相加。
+      </p>
+      <div class="formula">
+        <span class="math">总工作量 = N × s</span>
+        <span class="math">总容量 = 60 × H × m</span>
+        <p>
+          这里“分钟”指可在多名志愿者之间累计的服务工作时间，不是活动实际持续的钟表时间。s
+          表示每名学生由一名志愿者服务的平均用时。
+        </p>
+      </div>
+      <div class="formula">
+        <span class="math">60Hm ≥ Ns</span>
+        <span class="math">m<sub>最少</sub> = ⌈Ns / (60H)⌉</span>
+        <p>
+          ⌈ ⌉ 表示向上取整。适用于 H &gt; 0、N ≥ 0、s &gt; 0
+          的本课容量模型。它给出平均工作量下的最低人数要求。
+        </p>
+      </div>
+      <div class="note warm">
+        <strong>已知条件与假设要分开。</strong>题目给出的 N、s、H
+        是输入；“志愿者服务能力相同、全程可用、工作可分配”是简化假设。如果 s
+        来自少量样本，它只是平均用时的估计值，现实服务时间可能波动。
+      </div>
+    </template>
+    <template id="old-example">
+      <h2>例题：50 名学生，至少几人服务？</h2>
+      <p>
+        校园咨询台有 <strong>50 名学生</strong>，平均每名学生需要 <strong>6 分钟</strong>，开放
+        <strong>2 小时</strong
+        >。每名志愿者独立服务，一次服务一名学生，均可全程工作。按平均工作量估计，至少需要几名志愿者？
+      </p>
+      <p class="help">
+        本页所有例题和练习数据均为虚构教学数据，不是实际活动数据，也不是 2026 年赛题预测。
+      </p>
+      <ol class="steps">
+        <li>
+          <div>
+            <h3>写清输入与待求量</h3>
+            <p>N = 50 人，s = 6 分钟/人，H = 2 小时。待求量是 m，即志愿者人数。</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>求总工作量</h3>
+            <p class="equation">50 × 6 = 300 分钟</p>
+            <p>50 人 × 6 分钟/人 = 300 分钟。“人”相消，得到需要累计投入的服务时间。</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>统一时间单位</h3>
+            <p class="equation">2 × 60 = 120 分钟</p>
+            <p>一名志愿者可以提供 120 分钟的工作时间。</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>用容量估计人数，向上取整</h3>
+            <p class="equation">m ≥ 300 ÷ 120 = 2.5</p>
+            <p>2.5 人不是可执行的人数安排，因此本模型下至少需要 <strong>3 名志愿者</strong>。</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>检查少一人是否不足</h3>
+            <p>比较 2 人与 3 人提供的总容量，再说明结果的适用条件。</p>
+          </div>
+        </li>
+      </ol>
+      <div class="capacity">
+        <div>2 名志愿者<b>240 分钟 &lt; 300 分钟</b>总容量不足。</div>
+        <div>3 名志愿者<b>360 分钟 ≥ 300 分钟</b>满足总容量要求。</div>
+      </div>
+      <div class="note">
+        <strong>可以这样写结论：</strong>在平均服务时长为每人 6 分钟、每名志愿者可连续工作 2
+        小时且服务能力相同的简化条件下，按总容量估计至少需要 3 名志愿者。
+      </div>
+      <div class="note warm" style="margin-top: 12px">
+        <strong>但不保证不排队。</strong>若 50 人同时到达，3 人只能同时服务 3
+        名学生，其余仍须等候。若许多人临近结束才到达，甚至可能无法在结束前完成。到达时刻、时长波动和休息安排，需要另外考虑。
+      </div>
+    </template>
+    <script>
+      const lessons = [
+        [
+          '基础概念速通',
+          '回忆现实问题、模型、结果和局限四步。用一句话解释为什么人数要向上取整。',
+          '先写输入与输出，再区分待求量和暂时固定的参数。把时长统一为分钟，检验少一人是否仍满足总容量。',
+          '',
+          [
+            '有 96 名学生，每名平均服务 5 分钟，开放 2 小时。列出 N、s、H、m 的含义、单位和已知量；求所需最低人数，验证少一人的容量，并写一个假设和一个局限。',
+            '把人数从 96 改为 120，其余条件相同。重算人数，说明 N 在比较场景和单次计算中的角色，以及最低人数是否每增加一名学生就增加一人。',
+          ],
+          '只写 N、s、H、m 的含义与单位，再做一次小时到分钟的换算。',
+          '讨论集中到达或志愿者休息会影响哪条假设。',
+        ],
+        [
+          '函数、导数与积分的实际含义',
+          '说出横轴输入、纵轴输出各代表什么，标上单位。',
+          '函数记录输入和输出的关系。斜率描述平均变化率，导数描述某一时刻的变化率，积分把速率按时间累计。',
+          '虚构蓄水例：t 以小时计，累计入水 V(t)=2t+t² 升。在 t=1、2 时分别为 3 和 8 升，平均速率为 (8−3)/(2−1)=5 升/小时。瞬时速率 V′(t)=2+2t，t=1 时为 4 升/小时。前两小时累计量 ∫₀²(2+2t)dt=8 升。用“升/小时 × 小时 = 升”检查单位。',
+          [
+            '虚构冷却液累计量 Q(t)=3t+t² 升。计算 t=1 至 3 小时的平均速率、t=2 时的瞬时速率以及前 3 小时的累计量，写单位。',
+            '若流量前 15 分钟是 4 升/分钟、后 10 分钟是 2 升/分钟，画一个手绘或文字阶梯图，用面积求累计量并解释横纵轴。',
+          ],
+          '用自己的话区分瞬时速率和累计量，完成第 2 题的横纵轴标注。',
+          '用表格列出 0、1、2、3 小时的累计量并画折线。',
+        ],
+        [
+          '数据整理与描述统计',
+          '先想好每行是谁、每列是什么，以及缺失值与零的区别。',
+          '保留原始表，另建清洗表。检查缺失、重复、单位和录入错误，再看均值、中位数和标准差。异常先核实再决定如何处理。',
+          '虚构等待记录 2、4、6 分钟。均值和中位数都为 4。样本方差为 [(2−4)²+(4−4)²+(6−4)²]/(3−1)=4，样本标准差为 2 分钟。若新增一个 18 分钟记录，均值变为 7.5，中位数变为 5。先查记录，保留含与不含 18 的对照，说明纳入规则。',
+          [
+            '虚构等待记录 3、4、空白、6、25 分钟，另有一行 300 秒。统一单位，写缺失与可疑值的处理规则，算纳入和暂不纳入 25 时的均值、中位数。',
+            '画点图或手绘箱线示意，标明单位。解释两个版本的结果差异，以及为什么不能只凭数值大就删除记录。',
+          ],
+          '列出单位、缺失、异常三项检查，并说明空白如何处理。',
+          '对清洗后的一个版本计算样本标准差。',
+        ],
+        [
+          '拟合、回归与误差',
+          '回忆直线斜率和均值。先画散点再选模型。',
+          '拟合找一条能解释数据趋势的关系；回归描述平均关系，可用于预测。评价误差时保留训练之外的数据。相关性本身不能证明因果。',
+          '虚构咨询量 x（人）与总用时 y（分钟）。训练点 (1,3)、(2,5)、(3,7) 给出 ŷ=1+2x。留出的 (4,10)、(5,10) 预测为 9、11；实际减预测的误差为 1、−1 分钟，MAE=(1+1)/2=1 分钟，平均有符号误差为 0。后者会抵消，不能用来断言预测准确。',
+          [
+            '给定拟合式 ŷ=2+3x 和留出点 (4,13)、(5,19)、(6,20)。列预测、误差、绝对误差并计算 MAE。',
+            '对同样的三个点比较基线 ŷ=17。写一句基于误差的选择和一个不能外推的条件。',
+          ],
+          '先手算一个预测和一个绝对误差，写清单位。',
+          '画实际值与预测值散点图，标记误差最大的点。',
+        ],
+        [
+          '优化模型与约束条件',
+          '用一句话区分希望最好的指标与必须满足的限制。',
+          '先定义决策变量及取值范围，再写目标和约束。变量很少时先枚举，代回每个约束检验。',
+          '虚构排班：小组 A、B 各安排 x、y 班，非负整数。每班覆盖 3、2 人次，成本为 4、3 分，需覆盖至少 7 人次。最小化 4x+3y，约束 3x+2y≥7。按 x=0,1,2,3 对应最小 y=4,2,1,0，成本为 12,10,11,12。x≥4 已超过当前成本，故 (1,2) 最省且覆盖 7 人次。',
+          [
+            '虚构物资：甲包 4 件、成本 6 元，乙包 3 件、成本 5 元。至少要 10 件，甲包最多 2 个。写变量、目标和约束，枚举并核查最优方案。',
+            '如果还要求乙包至少 1 个，原方案是否可行？若需调整，重新比较候选，并写明覆盖量和总成本。',
+          ],
+          '只写出两个决策变量、目标函数和一条约束。',
+          '给队友解释为什么最优解依赖成本与覆盖需求的设定。',
+        ],
+        [
+          '评价模型与敏感性分析',
+          '标出哪些指标越大越好，哪些越小越好。',
+          '不同量纲先转换为同一方向的可比得分，再按有依据的权重汇总。改变关键权重或数据，观察排序是否稳定。',
+          '虚构 A/B/C 效果为 80/70/60，成本为 8/5/2。按最小最大法，效果得分 1/0.5/0，成本按越低越好得 0/0.5/1。效果权重 0.7 时总分 0.7/0.5/0.3，改成 0.4 后为 0.4/0.5/0.6，首选会变。若某指标全相同，分母为零，应记录并把它作为无区分项处理。',
+          [
+            '虚构 A/B/C 的服务量为 90/75/60，成本为 12/8/4。完成归一化，用服务量权重 0.6 给出分数与排序。',
+            '把服务量权重改为 0.45，比较结果并解释如何向队友报告排序变化。',
+          ],
+          '先标明指标方向，算一个方案的归一化得分。',
+          '试试相同成本情形，写出如何处理无区分指标。',
+        ],
+        [
+          '递推、排队与简单概率模拟',
+          '回忆容量足够仍可能排队。说明上一时段留下的人如何影响下一时段。',
+          '先用递推追踪积压，再用重复的随机情景观察波动。先定义到达与服务的时段顺序，记录每轮结果。',
+          '虚构咨询台：每时段先到达再服务，初始积压 0，服务容量均为 4，到达依次 6、2、5。Qₜ=max(0,Qₜ₋₁+Aₜ−4)，得到 2、0、1。模拟时若设每时段独立抛硬币，正面到 6 人、反面到 2 人，可重复生成到达序列，统计末段有积压的比例；该比例只对应设定的到达机制。',
+          [
+            '每段服务 5 人，初始积压 1，到达为 8、2、7、3。逐段列出积压和最大积压，说明一次服务的时间约定。',
+            '用硬币为三轮各生成四段到达（正面 7、反面 3），各轮从积压 0 开始，记末段是否有积压和经验比例，说明为什么三轮不足以稳定估计。',
+          ],
+          '只写递推式并算第一、第二段积压。',
+          '用表格重复 20 轮，和三轮结果对比。',
+        ],
+        [
+          'Excel或已有工具的基础实操',
+          '核对列名、单位、缺失规则。优先用自己已经会打开的表格工具。',
+          '保留原始列，把计算放进新列。先手算一行，再向下填充。图表选能解释变量关系的类型。',
+          '虚构表格：A 列咨询人数，B 列总用时（分钟），三行为 (10,25)、(20,50)、(30,66)。C2 输入 =B2/A2，向下填充得 2.5、2.5、2.2 分钟/人。总用时合计 ÷ 总人数=141/60=2.35 分钟/人，和三行比值的简单均值不同。用 A、B 两列画散点图，标明人数与总用时。',
+          [
+            '用 Excel、Numbers、已有工具或纸笔处理虚构三行 (12,30)、(18,45)、(24,54)。列出一行公式、每行比值与总体比值，写明缺失值处理。',
+            '为两列画散点图。记录轴、单位和一条谨慎结论。提交时可以文字写出三个坐标和作图过程。',
+          ],
+          '手算第一行的分钟/人，并写出对应的单元格公式。',
+          '增加一行人数为 0 的记录，说明如何避免除零。',
+        ],
+        [
+          '历年数学建模真题拆解',
+          '划出题干里的动作词，比如预测、估算、分级、比较。给每个动作写一个交付物。',
+          '以 2025 年数维杯秋季赛 C 题海水入侵为例。题意节录采用中文概述：先做风险分析与预测，再估算灾损并综合分级，后续讨论堤防与搬迁。练习读题、列输入和输出，不要求做 GIS 或灾害模拟。',
+          '拆解示范：把“预测风险”写成一行。输入是海平面与影响因素的观测和时间范围；中间产物是预测与阈值设定；输出是给定情景下的入侵风险或概率及不确定性说明。检查观测的时空覆盖与单位。再把风险输出连到后续分级，提醒队友损失估算仍需暴露对象和损失口径。这里演示任务依赖，未使用原题附表。',
+          [
+            '从上面的真题概述选“估损”和“分级”两项。各写输入、待补数据、输出与一条可执行的检查，用箭头连起它们与风险预测的依赖。',
+            '假设只拿到虚构的 A 区暴露人口 1000 人和 B 区 2000 人，说明还缺哪些数据才能估损，写一条发给队友的数据需求。',
+          ],
+          '只写风险预测、灾损估算、综合分级各自的输出。',
+          '手边有原题时对读第 2–4 页，圈出每问的原文交付要求。',
+        ],
+        [
+          '建模论文结构与结果表达',
+          '挑一个已做练习，找出它的数字、比较基准和假设。',
+          '从摘要、问题、数据与假设、方法、结果与检验、局限写清闭环。练习将结果用英文简洁表达，并用图表说明数据来源与单位。',
+          '虚构结果示范：两种排班在同一到达情景下的平均等待分别为 10 与 8 分钟。差为 2 分钟，较方案 A 下降 20%。英文示例：Under the simulated arrival pattern, mean waiting time decreased from 10 to 8 minutes. The comparison assumes equal service rates. 图注写样本/模拟场景、两方案、单位，不把模拟结果泛化到所有现实情况。',
+          [
+            '虚构 A/B 两方案留出集 MAE 分别为 12 与 9 分钟，留出数据为 8 个时段。写两句英文结果及一句局限，清楚说明基准。',
+            '为这组结果拟一个带单位的表题和一个摘要句，列出供复算的原始数据或脚本位置占位符。',
+          ],
+          '写一句带数字、单位和基准的结果。',
+          '和队友互换结果段，只凭图注与结果句尝试复算。',
+        ],
+        [
+          '三人模拟训练及分工',
+          '每人先说能独立交付什么、什么时候交接。',
+          '把一个小问分成读题与数据、建模与核算、写作与复查。每个环节设置负责人、复核人、交付格式和截止时刻。',
+          '虚构服务台演练：A 负责 10 分钟内交清洗表与符号表；B 用它交候选排班和校验；C 并行建论文骨架，收到结果后补表与假设。15 分钟检查一次依赖，缺数据时先跑最简基线。交付命名如 arrivals_v1.csv 和 results_v1.csv，结果表标注输入版本，由非作者复核一行计算。',
+          [
+            '用虚构的 4 段到达 3、8、4、2 人及每台每段容量 4 人，和两位队友做 20 分钟演练，比较 1 台与 2 台的最大积压。记录三人分工、时间与交付物。',
+            '记录一项卡点、它阻塞谁，以及你们采用的补救。若今天只能独立演练，写模拟交接单并如实注明。',
+          ],
+          '写出三人的角色、各自一个交付物和一次会合时间。',
+          '交换核算表，请队友用不同方法复核一个结果。',
+        ],
+        [
+          '赛前检查与复盘',
+          '回看自己的草稿和老师反馈，找出最容易遗漏的一类单位或假设。',
+          '检查题目与提交要求、团队联系、工具、目录、备份和分工。按已掌握、待批改、待补三个队列列出下一步。',
+          '虚构演练：发现结果表中的分钟列被误标为小时。先核对原数据与公式，修订图表和文中引用，再由队友用一个样本复算。将论文、代码、数据及复现说明分别放好，指定一人复核提交文件。真实格式、时限和材料要求请核对当届官网。',
+          [
+            '做一次赛前自检，写下文件夹、工具、联系渠道、个人要交付的任务，并为两项风险定负责人和检查时刻。',
+            '复盘一个真实练习：写一件已经能独立完成的事、一件仍需反馈的事和比赛前唯一优先补的任务。',
+          ],
+          '只写三条开赛前要检查的事及负责人。',
+          '离线重开一个备份，再用一行数据验证能复算。',
+        ],
+      ];
+
+      const glossary = [
+        [
+          '01 · 读题与建模',
+          [
+            [
+              '数学模型',
+              '用数量关系描述现实的一部分',
+              '把现实问题变成可计算的任务',
+              '比较需求工时与可用工时，估计服务人数',
+              '能说清对象、关系和限制',
+              '把算出的数字当作现实保证',
+            ],
+            [
+              '变量',
+              '在当前问题中变化或待决定的量',
+              '记录差异或表达要找的决策',
+              '比较不同安排时，志愿者人数 m 可变',
+              '能写含义、单位和取值范围',
+              '字母一旦定义就永远只能是变量',
+            ],
+            [
+              '参数',
+              '在一次分析中先给定的量',
+              '固定场景或描述模型特征',
+              '每人平均服务 5 分钟在本轮固定',
+              '能指出哪些量暂时固定',
+              '认为参数在任何场景都不能变化',
+            ],
+            [
+              '假设',
+              '为计算而暂时接受的简化条件',
+              '划清模型适用边界',
+              '暂设每名志愿者服务能力相同',
+              '能说一条假设及不满足时的影响',
+              '把假设写成已证实的事实',
+            ],
+            [
+              '输入',
+              '模型用来开始计算的信息',
+              '列清数据需求和来源',
+              '咨询人数、平均服务时长、开放时间',
+              '能逐项写来源和单位',
+              '把题目未给出的量当作已知',
+            ],
+            [
+              '输出',
+              '模型最终交出的结果',
+              '对齐小问的交付要求',
+              '最低志愿者人数和可用条件',
+              '能写清形式、单位与范围',
+              '给了计算过程却没回答问题',
+            ],
+          ],
+        ],
+        [
+          '02 · 函数与变化',
+          [
+            [
+              '函数',
+              '每个允许的输入对应一个输出',
+              '描述两个量的关系',
+              'V(t)=2t 把小时 t 映射到升数',
+              '会读图、代值、写定义域',
+              '忽略输入的适用范围',
+            ],
+            [
+              '斜率',
+              '两点之间输出变化量除以输入变化量',
+              '比较平均变化速度',
+              '两小时增加 8 升，斜率是 4 升/小时',
+              '会算 Δy/Δx 并写单位',
+              '把 y/x 当成任意区间的斜率',
+            ],
+            [
+              '导数',
+              '某一点附近的瞬时变化率',
+              '描述瞬时增减或变化快慢',
+              'V=t² 时，t=2 的速率是 4',
+              '会解释符号和实际单位',
+              '把瞬时速率当作已经累计的量',
+            ],
+            [
+              '积分',
+              '把许多微小变化加起来',
+              '由连续速率求累计量',
+              '2 升/分钟持续 3 分钟积出 6 升',
+              '能用面积解释，能算分段常值',
+              '忘记上下限或时间换算',
+            ],
+          ],
+        ],
+        [
+          '03 · 数据与统计',
+          [
+            [
+              '均值',
+              '总和除以有效记录数',
+              '描述一组数据的平均水平',
+              '2、4、6 分钟平均是 4 分钟',
+              '会计算并解释统计口径',
+              '把缺失当零参与平均',
+            ],
+            [
+              '中位数',
+              '排序后位于中间的数',
+              '描述受极端值影响较小的中心',
+              '2、4、30 的中位数是 4',
+              '会处理奇数和偶数样本',
+              '不排序就找原表中间一行',
+            ],
+            [
+              '标准差',
+              '数值偏离平均水平的典型尺度',
+              '比较同单位下的波动',
+              '2、4、6 的样本标准差为 2 分钟',
+              '知道样本公式分母为 n−1、单位同原值',
+              '把标准差当成均值的误差或用平方单位',
+            ],
+            [
+              '异常值',
+              '明显偏离常见范围的记录',
+              '定位录入错误或少见现象',
+              '25 分钟可能是误填，也可能遇到故障',
+              '能核实并报告取舍的影响',
+              '见到极端值就删掉',
+            ],
+          ],
+        ],
+        [
+          '04 · 拟合与验证',
+          [
+            [
+              '相关与因果',
+              '一起变化和一方造成另一方是两种关系',
+              '避免把观察到的关联写成机制',
+              '高温与冰饮销量常一起增加，需核对季节等因素',
+              '能写关联结论并指出混杂可能',
+              '凭一个相关系数断言因果',
+            ],
+            [
+              '回归',
+              '用输入解释或预测输出的平均趋势',
+              '量化变量关系并给预测',
+              '用人数估计总用时',
+              '会解释一个系数和检验误差',
+              '把回归系数直接写成因果效应',
+            ],
+            [
+              '拟合',
+              '选模型参数让预测尽量贴合已有数据',
+              '找可解释的简化关系',
+              '给散点找一条近似直线',
+              '会画散点并读拟合式',
+              '拟合越贴训练数据就一定越好',
+            ],
+            [
+              '预测误差',
+              '实际值和预测值的差',
+              '评价模型在新数据上的表现',
+              '实际 10 分钟、预测 8 分钟，绝对误差 2 分钟',
+              '会算留出集 MAE 并对比基线',
+              '用正负误差平均抵消来表示很准',
+            ],
+          ],
+        ],
+        [
+          '05 · 优化',
+          [
+            [
+              '决策变量',
+              '由你决定的量',
+              '表达可以调整哪些资源',
+              '决定甲包和乙包各买几个',
+              '能写整数、上下界与单位',
+              '把固定预算也当成待决定量',
+            ],
+            [
+              '目标函数',
+              '评价方案好坏的计算式',
+              '说明要最大化或最小化什么',
+              '总成本=单价×数量的合计',
+              '能从题目写出式子及方向',
+              '只写“越好越好”，不给计算指标',
+            ],
+            [
+              '约束条件',
+              '方案必须满足的限制',
+              '排除不可行方案',
+              '购买总件数必须至少为 10',
+              '能逐项代回验证',
+              '成本最低却忽略覆盖要求',
+            ],
+          ],
+        ],
+        [
+          '06 · 评价与稳健性',
+          [
+            [
+              '归一化',
+              '把不同单位的指标转到可比尺度',
+              '让成本和效果能够一起评分',
+              '越大越好用 (x−最小)/(最大−最小)',
+              '会区分方向和处理零分母',
+              '对成本使用越大越好的公式',
+            ],
+            [
+              '加权评价',
+              '按指标重要性计算综合分',
+              '比较多指标方案',
+              '0.6×效果得分+0.4×成本得分',
+              '会写权重来源与总和',
+              '把主观权重当成唯一客观事实',
+            ],
+            [
+              '敏感性分析',
+              '改动关键设定，看结论是否变化',
+              '判断结论是否稳健',
+              '效果权重改小后首选发生变化',
+              '会报告变动范围和结果差异',
+              '只给一套参数就断言方案稳定',
+            ],
+          ],
+        ],
+        [
+          '07 · 递推与模拟',
+          [
+            [
+              '递推',
+              '用上一步的状态算下一步',
+              '跟踪随时间变化的系统',
+              '下一段积压=上一段积压加到达再扣服务',
+              '会写初始条件和更新规则',
+              '漏掉初值或允许负积压',
+            ],
+            [
+              '排队',
+              '到达和服务不同步造成等待',
+              '估计积压、等待或资源需求',
+              '同时到 6 人而本段只服务 4 人',
+              '能区分总容量与时段积压',
+              '总容量足够就认为全程无需等待',
+            ],
+            [
+              '简单随机模拟',
+              '反复生成随机场景并记录结果',
+              '看波动或粗估事件比例',
+              '用抛硬币模拟高到达与低到达',
+              '能写随机规则、重复次数和指标',
+              '用一两轮结果当作稳定概率',
+            ],
+          ],
+        ],
+      ];
+
+      (() => {
+        'use strict';
+        const el = (id) => document.getElementById(id);
+        const format = 'shuwei-sprint-2026';
+        const key = format + ':v1';
+        const start = Date.parse('2026-11-08T00:00:00+08:00');
+        const contest = Date.parse('2026-11-20T09:00:00+08:00');
+        const dayMs = 86400000;
+        const maxText = 12000;
+        const labels = ['未学习', '正在学习', '已提交，待批改', '已掌握'];
+        const prompt =
+          '请先逐步批改，不要提前推进下一课。请指出正确部分、计算或单位错误、假设与局限，并告诉我是否已达到本课要求。若只完成最低任务，请先给一个最小补练建议。';
+        const dayTitle = (i) => 'Day ' + (i + 1) + ' · ' + lessons[i][0];
+        const dateText = (ms) => new Date(ms + 8 * 3600000).toISOString().slice(0, 10);
+        const dayIndex = (now) => Math.floor((now - start) / dayMs);
+        const indexOK = (i) => Number.isInteger(i) && i >= 0 && i < lessons.length;
+        const textOK = (s) => typeof s === 'string' && s.length <= maxText;
+        const answersOK = (a) => Array.isArray(a) && a.length === 3 && a.every(textOK);
+        const timeOK = (s) => typeof s === 'string' && Number.isFinite(Date.parse(s));
+        const clone = (v) => JSON.parse(JSON.stringify(v));
+        const escape = (s) =>
+          String(s).replace(
+            /[&<>"']/g,
+            (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
+          );
+        const same = (a, b) => JSON.stringify(a) === JSON.stringify(b);
+        const blankDay = (i) => ({
+          started: i === 0,
+          answers: ['', '', ''],
+          notes: '',
+          attempts: [],
+        });
+        const fresh = () => ({
+          format,
+          version: 1,
+          active: 0,
+          next: null,
+          days: lessons.map((_, i) => blankDay(i)),
+        });
+        const submitted = (d) => d.attempts[d.attempts.length - 1];
+        const currentAttempt = (d) => {
+          const attempt = submitted(d);
+          return attempt && same(attempt.answers, d.answers) ? attempt : null;
+        };
+        const status = (d) => {
+          const attempt = currentAttempt(d);
+          return attempt
+            ? attempt.review
+              ? 3
+              : 2
+            : d.started || d.answers.some((s) => s.trim()) || d.notes.trim()
+              ? 1
+              : 0;
+        };
+        function validate(raw) {
+          if (
+            !raw ||
+            raw.format !== format ||
+            raw.version !== 1 ||
+            !indexOK(raw.active) ||
+            (raw.next !== null && !indexOK(raw.next)) ||
+            !Array.isArray(raw.days) ||
+            raw.days.length !== 12
+          ) {
+            throw new Error('备份格式或版本不匹配。');
+          }
+          const days = raw.days.map((d) => {
+            if (
+              !d ||
+              typeof d.started !== 'boolean' ||
+              !answersOK(d.answers) ||
+              !textOK(d.notes) ||
+              !Array.isArray(d.attempts) ||
+              d.attempts.length > 100
+            )
+              throw new Error('备份中有无效课程记录。');
+            const attempts = d.attempts.map((a) => {
+              if (
+                !a ||
+                !answersOK(a.answers) ||
+                !a.answers.some((s) => s.trim()) ||
+                !textOK(a.notes) ||
+                !timeOK(a.at)
+              )
+                throw new Error('备份中有无效的提交记录。');
+              let review = null;
+              if (a.review !== null) {
+                if (
+                  !a.review ||
+                  a.review.confirmed !== true ||
+                  !textOK(a.review.feedback) ||
+                  !a.review.feedback.trim() ||
+                  !timeOK(a.review.at) ||
+                  Date.parse(a.review.at) < Date.parse(a.at)
+                )
+                  throw new Error('备份中有无效的老师确认。');
+                review = { confirmed: true, feedback: a.review.feedback, at: a.review.at };
+              }
+              return { answers: a.answers.slice(), notes: a.notes, at: a.at, review };
+            });
+            return { started: d.started, answers: d.answers.slice(), notes: d.notes, attempts };
+          });
+          return { format, version: 1, active: raw.active, next: raw.next, days };
+        }
+
+        let state = fresh();
+        let savedRaw = null;
+        let blocked = false;
+        let dirty = false;
+        let noticeTimer;
+        function message(text, error = false) {
+          const node = el('notice');
+          node.textContent = text;
+          node.style.background = error ? '#fbf1dd' : '';
+          node.hidden = false;
+          clearTimeout(noticeTimer);
+          noticeTimer = setTimeout(() => {
+            node.hidden = true;
+          }, 5200);
+        }
+        function storageMessage(text, error = false) {
+          el('storage').textContent = text;
+          el('storage').classList.toggle('error', error);
+        }
+        try {
+          savedRaw = localStorage.getItem(key);
+          if (savedRaw !== null) state = validate(JSON.parse(savedRaw));
+          storageMessage(
+            savedRaw === null
+              ? '输入时自动尝试保存到此浏览器。可在学习记录中另存 JSON。'
+              : '已恢复此浏览器保存的冲刺记录。',
+          );
+        } catch {
+          blocked = true;
+          storageMessage(
+            '本地存储不可用或旧记录无法读取。请保留页面，使用 JSON 导出当前内容。',
+            true,
+          );
+        }
+        function persist(next, isDraft = false) {
+          if (isDraft) {
+            state = next;
+            dirty = true;
+          }
+          try {
+            if (blocked || localStorage.getItem(key) !== savedRaw)
+              throw new Error('存储受限或另一页面已修改记录');
+            const raw = JSON.stringify(next);
+            localStorage.setItem(key, raw);
+            if (localStorage.getItem(key) !== raw) throw new Error('保存未能核实');
+            savedRaw = raw;
+            state = next;
+            dirty = false;
+            storageMessage(
+              '已保存到此浏览器 · ' +
+                new Date().toLocaleTimeString('zh-CN', {
+                  timeZone: 'Asia/Shanghai',
+                  hour12: false,
+                }),
+            );
+            return true;
+          } catch {
+            storageMessage('本地保存失败。当前输入仍在页面中，请先导出 JSON。', true);
+            if (!isDraft) message('此操作尚未保存。当前输入可导出。', true);
+            return false;
+          }
+        }
+        window.addEventListener('storage', (e) => {
+          if ((e.key === key || e.key === null) && localStorage.getItem(key) !== savedRaw) {
+            blocked = true;
+            storageMessage('另一页面更改了记录。为防覆盖，当前页已暂停写入。请先导出 JSON。', true);
+          }
+        });
+        window.addEventListener('beforeunload', (e) => {
+          if (dirty) {
+            e.preventDefault();
+            e.returnValue = '';
+          }
+        });
+
+        window.mathSprintHasUnsavedChanges = () => dirty;
+        window.mathSprintCanLeave = () => {
+          if (!dirty) return true;
+          message('有尚未保存的作答，请先导出 JSON。', true);
+          return false;
+        };
+        el('classic-link').onclick = (event) => {
+          if (!window.mathSprintCanLeave()) event.preventDefault();
+        };
+
+        function bestNext() {
+          if (state.next !== null && status(state.days[state.next]) !== 3) return state.next;
+          if (status(state.days[state.active]) !== 3) return state.active;
+          return state.days.findIndex((d) => status(d) < 3);
+        }
+        function tick(now = Date.now()) {
+          const remaining = Math.max(0, Math.floor((contest - now) / 1000));
+          const pad = (n) => String(n).padStart(2, '0');
+          el('countdown').textContent =
+            now >= contest
+              ? '已到开赛时间'
+              : Math.floor(remaining / 86400) +
+                ' 天 ' +
+                pad(Math.floor(remaining / 3600) % 24) +
+                ':' +
+                pad(Math.floor(remaining / 60) % 60) +
+                ':' +
+                pad(remaining % 60);
+          el('today-date').textContent = dateText(now);
+          const i = dayIndex(now);
+          const next = bestNext();
+          const suggested = indexOK(i) && status(state.days[i]) < 3 ? i : next;
+          const link = el('today-link');
+          link.hidden = suggested < 0;
+          link.dataset.day = suggested;
+          const prefix =
+            i < 0
+              ? '冲刺计划从 11 月 8 日开始。'
+              : i >= 12
+                ? '建议安排已到期，仍可补练。'
+                : '原定 ' + dayTitle(i) + '。';
+          el('suggestion').textContent =
+            prefix +
+            (suggested < 0
+              ? '12 课均已确认掌握，可以复盘。'
+              : i === suggested
+                ? '有 10 分钟就先做最低任务。'
+                : ' 可继续 ' + dayTitle(suggested) + '。');
+        }
+        function refresh() {
+          const counts = [0, 0, 0, 0];
+          state.days.forEach((d) => counts[status(d)]++);
+          el('progress').textContent = counts[3] + ' / 12';
+          el('progress-detail').textContent = '正在学习 ' + counts[1] + ' · 待批改 ' + counts[2];
+          el('plan-list').innerHTML = lessons
+            .map(
+              (lesson, i) =>
+                '<button class="plan-row" data-day="' +
+                i +
+                '"' +
+                (state.active === i ? ' aria-current="true"' : '') +
+                '><small>11月' +
+                (8 + i) +
+                '日 · Day ' +
+                (i + 1) +
+                '</small><strong>' +
+                escape(lesson[0]) +
+                '</strong><span class="pill">' +
+                labels[status(state.days[i])] +
+                (state.next === i && status(state.days[i]) < 3 ? ' · 下一课' : '') +
+                '</span></button>',
+            )
+            .join('');
+          el('resume').disabled = bestNext() < 0;
+          el('stage').disabled = counts[3] < 7;
+          el('stage-info').textContent =
+            counts[3] < 7
+              ? '阶段总结在冲刺课程实际确认掌握 7 课后可生成，目前 ' + counts[3] + ' / 7。'
+              : '已达到首个 7 课里程碑，可生成阶段总结。';
+          tick();
+        }
+        function reviewControls() {
+          const d = state.days[state.active];
+          const attempt = currentAttempt(d);
+          el('submit-local').disabled =
+            !el('sent').checked ||
+            !d.answers.some((s) => s.trim()) ||
+            !!attempt ||
+            d.attempts.length >= 100;
+          el('master').disabled =
+            !attempt || !!attempt.review || !el('reviewed').checked || !el('feedback').value.trim();
+          el('attempt-info').textContent = attempt
+            ? attempt.review
+              ? '本版已由你记录老师确认。'
+              : '本版已记录实际提交，等待老师批改。'
+            : submitted(d)
+              ? '当前草稿与上一次提交不同。请提交新版本后再记录老师的批改。'
+              : '当前暂无提交记录。';
+          el('lesson-state').textContent = labels[status(d)];
+        }
+        function renderLesson() {
+          const i = state.active;
+          const [title, recap, concept, example, questions, minimum, optional] = lessons[i];
+          const day = state.days[i];
+          el('lesson-content').innerHTML =
+            '<div class="section-kicker">11月' +
+            (8 + i) +
+            '日建议 · Day ' +
+            (i + 1) +
+            '</div><h2>' +
+            escape(title) +
+            '</h2><div class="actions"><span class="pill" id="lesson-state"></span><button id="pick-next">把本课设为下一课</button></div>' +
+            '<div class="note"><strong>10 分钟最低任务</strong><p>' +
+            escape(minimum) +
+            '</p><a href="#answer-0">直接写最低任务</a></div>' +
+            '<h3>5 分钟 · 知识回顾</h3><p>' +
+            escape(recap) +
+            '</p>' +
+            '<h3>15 分钟 · 核心概念与完整示范</h3><p>' +
+            escape(concept) +
+            '</p>' +
+            (i === 0
+              ? '<div id="legacy-lesson"></div>'
+              : '<div class="formula"><strong>示范</strong><p>' + escape(example) + '</p></div>') +
+            '<h3>20 分钟 · 独立练习</h3><p class="help">例题与练习数据为虚构教学数据。请保留自己的算式、单位、假设和限制。参考答案请在提交后向老师获取。</p>';
+          if (i === 0) {
+            el('legacy-lesson').append(
+              el('old-concepts').content.cloneNode(true),
+              el('old-example').content.cloneNode(true),
+            );
+          }
+          if (i === 8) {
+            const ref = document.createElement('p');
+            ref.className = 'help';
+            ref.textContent =
+              '真题来源：2025 年第十一届数维杯秋季赛 C 题，Urban Seawater Intrusion Risk Assessment and Governance Planning，第 2–4 页。';
+            el('lesson-content').insertBefore(
+              ref,
+              el('lesson-content').querySelector('h3:last-of-type'),
+            );
+          }
+          el('answer-fields').innerHTML = [minimum, ...questions]
+            .map((q, n) => {
+              const name = n === 0 ? '最低任务作答' : '练习 ' + n;
+              return (
+                '<div class="exercise"><label for="answer-' +
+                n +
+                '">' +
+                name +
+                '</label><p id="q-' +
+                n +
+                '">' +
+                escape(q) +
+                '</p><textarea id="answer-' +
+                n +
+                '" data-answer-index="' +
+                n +
+                '" aria-describedby="q-' +
+                n +
+                '" maxlength="' +
+                maxText +
+                '" placeholder="写下你的步骤和想法"></textarea></div>'
+              );
+            })
+            .join('');
+          day.answers.forEach((value, n) => {
+            el('answer-' + n).value = value;
+          });
+          el('notes').maxLength = maxText;
+          el('notes').value = day.notes;
+          el('optional').innerHTML =
+            '<details><summary>选做 · 最多 15 分钟</summary><p>' +
+            escape(optional) +
+            '</p></details>';
+          el('sent').checked = false;
+          el('reviewed').checked = false;
+          el('feedback').value = '';
+          el('attempt-history').innerHTML = day.attempts.length
+            ? '<details><summary>历史提交 · ' +
+              day.attempts.length +
+              ' 份</summary>' +
+              day.attempts
+                .map(
+                  (a, n) =>
+                    '<div class="exercise"><strong>第 ' +
+                    (n + 1) +
+                    ' 份 · ' +
+                    dateText(Date.parse(a.at)) +
+                    (a.review ? ' · 老师已确认' : ' · 已提交') +
+                    '</strong><pre>' +
+                    escape(answerText(i, a)) +
+                    '</pre>' +
+                    (a.review ? '<p>老师反馈：' + escape(a.review.feedback) + '</p>' : '') +
+                    '</div>',
+                )
+                .join('') +
+              '</details>'
+            : '';
+          el('pick-next').disabled = status(day) === 3;
+          el('pick-next').onclick = () => {
+            if (status(state.days[i]) === 3) return;
+            const next = { ...state, next: i };
+            if (persist(next)) {
+              refresh();
+              message('已设为下一课，可从首页继续。');
+            }
+          };
+          reviewControls();
+        }
+        function openLesson(i) {
+          if (!indexOK(i)) return;
+          const next = clone(state);
+          next.active = i;
+          next.days[i].started = true;
+          persist(next, true);
+          renderLesson();
+          refresh();
+          el('lesson').scrollIntoView();
+        }
+        el('resume').onclick = () => openLesson(bestNext());
+        el('today-link').onclick = (e) => {
+          e.preventDefault();
+          openLesson(Number(el('today-link').dataset.day));
+        };
+        el('plan-list').onclick = (e) => {
+          const button = e.target.closest('[data-day]');
+          if (button) openLesson(Number(button.dataset.day));
+        };
+        function changeDraft(field, value) {
+          const before = status(state.days[state.active]);
+          const next = clone(state);
+          const day = next.days[next.active];
+          day.started = true;
+          if (field === 'notes') day.notes = value;
+          else day.answers[field] = value;
+          persist(next, true);
+          if (field !== 'notes') {
+            el('sent').checked = false;
+            el('reviewed').checked = false;
+            el('feedback').value = '';
+          }
+          if (status(day) !== before) {
+            refresh();
+          }
+          reviewControls();
+        }
+        el('answer-fields').oninput = (e) => {
+          if (e.target.matches('[data-answer-index]'))
+            changeDraft(Number(e.target.dataset.answerIndex), e.target.value);
+        };
+        el('notes').oninput = () => changeDraft('notes', el('notes').value);
+        el('sent').onchange = reviewControls;
+        el('reviewed').onchange = reviewControls;
+        el('feedback').oninput = reviewControls;
+        el('submit-local').onclick = () => {
+          reviewControls();
+          if (el('submit-local').disabled) return;
+          const next = clone(state);
+          const day = next.days[next.active];
+          day.attempts.push({
+            answers: day.answers.slice(),
+            notes: day.notes,
+            at: new Date().toISOString(),
+            review: null,
+          });
+          if (persist(next)) {
+            renderLesson();
+            refresh();
+            message('已记录实际提交 · 待批改。');
+          }
+        };
+        el('master').onclick = () => {
+          reviewControls();
+          if (el('master').disabled) return;
+          const next = clone(state);
+          const attempt = currentAttempt(next.days[next.active]);
+          attempt.review = {
+            confirmed: true,
+            feedback: el('feedback').value.trim(),
+            at: new Date(Math.max(Date.now(), Date.parse(attempt.at))).toISOString(),
+          };
+          if (persist(next)) {
+            renderLesson();
+            refresh();
+            message('已记录老师确认 · 已掌握。');
+          }
+        };
+
+        function answerText(i, day, markdown = false) {
+          const headings = ['最低任务', '练习 1', '练习 2'];
+          return [
+            (markdown ? '# ' : '') + dayTitle(i),
+            '虚构教学数据 · 个人作答',
+            '',
+            ...[lessons[i][5], ...lessons[i][4]].flatMap((question, n) => [
+              (markdown ? '## ' : '') + headings[n],
+              question,
+              '',
+              '我的答案',
+              day.answers[n] || '（未作答）',
+              '',
+            ]),
+            (markdown ? '## ' : '') + '学习笔记',
+            day.notes || '（未填写）',
+            '',
+            prompt,
+          ].join('\n');
+        }
+        async function download(content, type, filename) {
+          if (window.mathSprintDownload) {
+            try {
+              message(await window.mathSprintDownload(content, type, filename));
+            } catch {
+              showText(content, '手动备份', '系统分享未完成。可全选并复制到本地文件。');
+            }
+            return;
+          }
+          try {
+            const url = URL.createObjectURL(new Blob([content], { type }));
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 60000);
+            message('已发起下载。请在浏览器下载列表或手机文件中确认。');
+          } catch {
+            showText(
+              content,
+              '手动备份',
+              '请全选并复制到本地文件，文件名建议为 ' + filename + '。',
+            );
+          }
+        }
+        function showText(text, title = '手动复制', help = '长按全选复制，或在 Mac 上按 ⌘C。') {
+          el('copy-text').value = text;
+          el('dialog-title').textContent = title;
+          el('dialog-help').textContent = help;
+          const dialog = el('text-dialog');
+          if (typeof dialog.showModal === 'function') dialog.showModal();
+          else dialog.setAttribute('open', '');
+          el('select-text').click();
+        }
+        async function copy(text) {
+          try {
+            await navigator.clipboard.writeText(text);
+            message('已复制。需要批改时，请手动粘贴到聊天。');
+          } catch {
+            showText(text);
+          }
+        }
+        el('select-text').onclick = () => {
+          el('copy-text').focus();
+          el('copy-text').select();
+        };
+        el('close-dialog').onclick = () => {
+          const dialog = el('text-dialog');
+          if (typeof dialog.close === 'function') dialog.close();
+          else dialog.removeAttribute('open');
+        };
+        el('copy-answer').onclick = () => copy(answerText(state.active, state.days[state.active]));
+        el('copy-prompt').onclick = () => copy(prompt);
+        el('text-export').onclick = () =>
+          download(
+            '\uFEFF' + answerText(state.active, state.days[state.active]),
+            'text/plain;charset=utf-8',
+            '数维杯-冲刺Day' + (state.active + 1) + '-作答.txt',
+          );
+        el('md-export').onclick = () =>
+          download(
+            answerText(state.active, state.days[state.active], true),
+            'text/markdown;charset=utf-8',
+            '数维杯-冲刺Day' + (state.active + 1) + '-作答.md',
+          );
+        el('export-json').onclick = () => {
+          const history = [
+            { day: 1, status: '已掌握' },
+            { day: 2, status: '已讲解、待练习' },
+          ];
+          download(
+            JSON.stringify(
+              {
+                ...state,
+                exportedAt: new Date().toISOString(),
+                historical: history,
+                courseStatuses: state.days.map((d, i) => ({
+                  day: i + 1,
+                  title: lessons[i][0],
+                  status: labels[status(d)],
+                })),
+              },
+              null,
+              2,
+            ),
+            'application/json',
+            '数维杯-冲刺备份-' + dateText(Date.now()) + '.json',
+          );
+        };
+
+        function migrate(raw) {
+          const draft =
+            raw?.course === 'math-modeling-day2' && raw.version === 1
+              ? raw.answers
+              : raw?.format === 'math-pocket-backup' &&
+                  raw.version === 1 &&
+                  Array.isArray(raw.drafts)
+                ? raw.drafts.find((d) => d && d.courseId === 'day-2')?.answers
+                : null;
+          if (!draft) throw new Error('备份未找到旧版 Day 2 草稿。');
+          const values = [draft.symbols, draft.exercise1, draft.exercise2, draft.reflection];
+          if (!values.every(textOK) || !values.some((v) => v.trim()))
+            throw new Error('旧版草稿为空或超过单栏字数上限。');
+          const next = clone(state);
+          const day = next.days[0];
+          const incoming = [...values.slice(0, 3), values[3]];
+          const existing = [...day.answers, day.notes];
+          if (!incoming.some((value, i) => value.trim() && !existing[i].trim()))
+            throw new Error('旧版内容已有对应记录，或相应栏位已填写。原记录已保留。');
+          incoming.forEach((value, i) => {
+            if (!existing[i].trim() && value.trim()) {
+              if (i === 3) day.notes = value;
+              else day.answers[i] = value;
+            }
+          });
+          return next;
+        }
+        function merge(incoming) {
+          const next = clone(incoming);
+          incoming.days.forEach((day, i) => {
+            const local = state.days[i];
+            const hasRecord = (d) =>
+              d.attempts.length || d.answers.some((s) => s.trim()) || d.notes.trim();
+            if (!hasRecord(local)) {
+              next.days[i].started ||= local.started;
+            } else if (!hasRecord(day) || same(local, day)) {
+              next.days[i] = local;
+            } else {
+              throw new Error(
+                '冲刺 Day ' +
+                  (i + 1) +
+                  ' 与本机记录有冲突。原记录已保留。可在新的浏览器环境导入这份备份。',
+              );
+            }
+          });
+          return next;
+        }
+        el('import-json').onclick = () => el('file').click();
+        el('file').onchange = async () => {
+          const file = el('file').files[0];
+          el('file').value = '';
+          if (!file) return;
+          try {
+            if (file.size > 8 * 1024 * 1024)
+              throw new Error('文件超过 8 MB，请确认选中了学习备份。');
+            const content = await file.text();
+            const match = content.match(
+              /<script\s+id="embedded-draft"\s+type="application\/json"\s*>([\s\S]*?)<\/script\s*>/i,
+            );
+            const raw = JSON.parse(match ? match[1] : content.replace(/^\uFEFF/, ''));
+            const incoming = raw?.format === format ? merge(validate(raw)) : migrate(raw);
+            if (persist(incoming)) {
+              renderLesson();
+              refresh();
+              message(
+                raw?.format === format
+                  ? '已导入。保留本机已有记录，并补入备份中的课程。'
+                  : '已把旧 Day 2 草稿迁入冲刺 Day 1 的空白栏。',
+              );
+            }
+          } catch (e) {
+            message(
+              '导入未完成。 ' + (e instanceof SyntaxError ? '无法读取备份格式。' : e.message),
+              true,
+            );
+          }
+        };
+
+        function summary(stage = false) {
+          const confirmed = state.days
+            .map((d, i) => ({ d, i, at: currentAttempt(d)?.review?.at }))
+            .filter((r) => r.at);
+          if (stage && confirmed.length < 7) return;
+          const next = bestNext();
+          const list = [
+            stage ? '数维杯 2026 · 首个 7 课阶段总结' : '数维杯 2026 · 12 天冲刺进度',
+            '日期（北京） ' + dateText(Date.now()),
+            '冲刺已掌握 ' +
+              confirmed.length +
+              '/12。原 30 天课程独立记录：原 Day 1 已掌握，原 Day 2 已讲解、待练习。',
+            ...(stage
+              ? [
+                  '最早确认的 7 课（按批改确认时间）',
+                  ...confirmed
+                    .sort((a, b) => Date.parse(a.at) - Date.parse(b.at))
+                    .slice(0, 7)
+                    .map(
+                      ({ d, i, at }) =>
+                        '· ' +
+                        dayTitle(i) +
+                        '（' +
+                        dateText(Date.parse(at)) +
+                        '）' +
+                        ' · 反馈：' +
+                        currentAttempt(d).review.feedback.slice(0, 100),
+                    ),
+                ]
+              : []),
+            ...labels.map(
+              (name, value) =>
+                name +
+                '：' +
+                (state.days
+                  .map((d, i) => (status(d) === value ? dayTitle(i) : null))
+                  .filter(Boolean)
+                  .join('、') || '无'),
+            ),
+            next < 0
+              ? '下一步：复盘已掌握的课程。'
+              : '优先处理 ' +
+                dayTitle(next) +
+                '，' +
+                (status(state.days[next]) === 2
+                  ? '等待老师批改，必要时选另一课先学。'
+                  : '可先完成 10 分钟最低任务。'),
+            next >= 0 && state.days[next].notes.trim()
+              ? '本课笔记摘要：' + state.days[next].notes.trim().slice(0, 160)
+              : '',
+            '请从我实际的作答与批改状态接续，先处理待批改或待补内容。',
+          ];
+          copy(list.filter(Boolean).join('\n'));
+        }
+        el('summary').onclick = () => summary();
+        el('stage').onclick = () => summary(true);
+        function renderQuick() {
+          const query = el('quick-search').value.trim().toLowerCase();
+          const found = glossary
+            .map(([group, entries]) => [
+              group,
+              entries.filter((entry) => [group, ...entry].join(' ').toLowerCase().includes(query)),
+            ])
+            .filter(([, entries]) => entries.length);
+          const fields = ['解释', '解决什么问题', '简短例子', '掌握程度', '常见误区'];
+          el('quick-list').innerHTML = found.length
+            ? found
+                .map(
+                  ([group, entries]) =>
+                    '<div class="glossary-group"><h3>' +
+                    escape(group) +
+                    '</h3><div class="glossary-grid">' +
+                    entries
+                      .map(
+                        ([term, ...lines]) =>
+                          '<details><summary>' +
+                          escape(term) +
+                          '</summary>' +
+                          lines
+                            .map(
+                              (value, i) =>
+                                '<p><strong>' + fields[i] + '</strong> · ' + escape(value) + '</p>',
+                            )
+                            .join('') +
+                          '</details>',
+                      )
+                      .join('') +
+                    '</div></div>',
+                )
+                .join('')
+            : '<p class="help">没找到这个关键词。试试更短的词。</p>';
+        }
+        el('quick-search').oninput = renderQuick;
+        renderLesson();
+        refresh();
+        renderQuick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

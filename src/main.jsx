@@ -2,8 +2,8 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from './app/App.jsx';
 import './styles.css';
-import { isNativeApp } from './platform/files.js';
-import { startNativeNavigation } from './platform/navigation.js';
+import { download, isNativeApp } from './platform/files.js';
+import { backHandlers, startNativeNavigation } from './platform/navigation.js';
 
 class AppBoundary extends React.Component {
   state = { failed: false };
@@ -22,14 +22,48 @@ class AppBoundary extends React.Component {
     return this.props.children;
   }
 }
-createRoot(document.getElementById('root')).render(
-  <AppBoundary>
-    <App />
-  </AppBoundary>,
-);
-startNativeNavigation().catch(() =>
-  window.dispatchEvent(new Event('math:native-navigation-error')),
-);
+const sprintPage = document.body.hasAttribute('data-sprint-app');
+const native = isNativeApp();
+if (sprintPage && native) {
+  window.mathSprintDownload = download;
+  document.getElementById('classic-link').hidden = false;
+  const dialog = document.getElementById('text-dialog');
+  const backToHome = () => {
+    if (dialog.open) {
+      document.getElementById('close-dialog').click();
+    } else if (window.mathSprintCanLeave()) {
+      document.getElementById('home').scrollIntoView();
+    }
+  };
+  let removeBack;
+  const syncBack = () => {
+    const enabled = dialog.open || window.scrollY > 48 || window.mathSprintHasUnsavedChanges();
+    if (enabled && !removeBack) removeBack = backHandlers.add(backToHome);
+    if (!enabled && removeBack) {
+      removeBack();
+      removeBack = undefined;
+    }
+  };
+  window.addEventListener('scroll', syncBack, { passive: true });
+  document.addEventListener('input', syncBack);
+  new MutationObserver(syncBack).observe(dialog, { attributeFilter: ['open'] });
+  syncBack();
+} else if (!sprintPage) {
+  if (native && new URLSearchParams(location.search).get('classic') !== '1') {
+    location.replace(new URL('./sprint.html', document.baseURI));
+  } else {
+    createRoot(document.getElementById('root')).render(
+      <AppBoundary>
+        <App />
+      </AppBoundary>,
+    );
+  }
+}
+if (native) {
+  startNativeNavigation().catch(() =>
+    window.dispatchEvent(new Event('math:native-navigation-error')),
+  );
+}
 if (import.meta.env.PROD && location.protocol !== 'file:' && !isNativeApp()) {
   if ('serviceWorker' in navigator)
     navigator.serviceWorker

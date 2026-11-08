@@ -232,6 +232,11 @@ export function Profile({
                     : '正在准备离线资源'}
             </Badge>
           </div>
+          {isNativeApp() && (
+            <p>
+              <a href="./sprint.html">返回 12 天冲刺学习助手</a>
+            </p>
+          )}
           <p className="muted">
             {isNativeApp()
               ? '课程随安装包保存在手机，首次启动即可离线学习。本机作答不会自动同步到浏览器。'
