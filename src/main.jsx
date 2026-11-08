@@ -32,7 +32,7 @@ if (sprintPage && native) {
     if (dialog.open) {
       document.getElementById('close-dialog').click();
     } else if (window.mathSprintCanLeave()) {
-      document.getElementById('home').scrollIntoView();
+      window.scrollTo(0, 0);
     }
   };
   let removeBack;
